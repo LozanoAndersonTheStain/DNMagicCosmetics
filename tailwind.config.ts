@@ -23,18 +23,18 @@ export default {
         "900dn": "#920949",
       },
       fontFamily: {
-        nunito: ['Nunito', 'sans-serif'],
+        nunito: ["Nunito", "sans-serif"],
       },
       keyframes: {
         textReveal: {
-          '0%': { strokeDashoffset: '100' },
-          '50%': { fill: 'transparent' },
-          '80%': { strokeDashoffset: '0', stroke: 'black' },
-          '100%': { fill: 'black', strokeDashoffset: '0', stroke: 'black' }
-        }
+          "0%": { strokeDashoffset: "100" },
+          "50%": { fill: "transparent" },
+          "80%": { strokeDashoffset: "0", stroke: "black" },
+          "100%": { fill: "black", strokeDashoffset: "0", stroke: "black" },
+        },
       },
       animation: {
-        'text-reveal': 'textReveal 8s ease-in-out',
+        "text-reveal": "textReveal 8s ease-in-out",
       },
     },
   },
