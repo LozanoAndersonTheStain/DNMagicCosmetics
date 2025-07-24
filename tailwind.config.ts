@@ -21,6 +21,7 @@ export default {
         "700dn": "#D60068",
         "800dn": "#B00454",
         "900dn": "#920949",
+        "950dn": "#5a0028",
       },
       fontFamily: {
         nunito: ["Nunito", "sans-serif"],
