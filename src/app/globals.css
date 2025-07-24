@@ -14,13 +14,21 @@ body {
 }
 
 @keyframes fadeIn {
-  0% {opacity: 0;}
-  100% {opacity: 1;}
-} 
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 @-webkit-keyframes fadeIn {
-  0% {opacity: 0;}
-  100% {opacity: 1;}
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .fade-in {
@@ -39,7 +47,13 @@ body {
   left: 0;
   height: 100vh;
   width: 100vw;
-  background: radial-gradient(circle at 50% 50%, #ff9cdb 25%, #ff5fc1 50%, #ff31a6 75%, #f51486 100%);
+  background: radial-gradient(
+    circle at 50% 50%,
+    #ff9cdb 25%,
+    #ff5fc1 50%,
+    #ff31a6 75%,
+    #f51486 100%
+  );
   display: flex;
   justify-content: center;
   align-items: center;
@@ -81,5 +95,14 @@ body {
   to {
     opacity: 0;
     visibility: hidden;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
   }
 }
