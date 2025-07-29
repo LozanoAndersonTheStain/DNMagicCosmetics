@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "embla-carousel-autoplay": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
     "google-auth-library": "^9.15.1",
     "google-spreadsheet": "^4.1.4",
     "next": "15.1.7",
     "react": "^19.0.0",
+    "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0"
   },
