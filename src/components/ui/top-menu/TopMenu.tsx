@@ -39,7 +39,7 @@ export default function TopMenu() {
         <div className="container mx-auto flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold">
             <Image
-              src="/assets/logo.svg"
+              src="/assets/Logo.svg"
               alt="Logo"
               width={100}
               height={40}
