@@ -25,16 +25,34 @@ export default function ProductPage({ params }: Props) {
   const [currentImage, setCurrentImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [imageError, setImageError] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { addToCart } = useCart();
   const router = useRouter();
 
   const product = products.find((product) => product.slug === slug);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
     if (!loading && !product && products.length > 0) {
       notFound();
     }
   }, [loading, product, products]);
+
+  const getImageSrc = (imageSrc: string | undefined) => {
+    if (imageError || !imageSrc || imageSrc.trim() === "") {
+      return "/assets/products/placeholder.png";
+    }
+    return imageSrc;
+  };
+
+  const handleImageError = () => {
+    console.warn(`Error loading image for product: ${product?.title}`);
+    setImageError(true);
+  };
 
   const handleGoBack = () => {
     router.back();
@@ -54,6 +72,14 @@ export default function ProductPage({ params }: Props) {
   const handleMouseLeave = () => {
     setIsZoomed(false);
   };
+
+  if (!isMounted) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="text-lg">Cargando...</div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -134,7 +160,7 @@ export default function ProductPage({ params }: Props) {
             onMouseLeave={handleMouseLeave}
           >
             <Image
-              src={images[currentImage] || "/placeholder.jpg"}
+              src={getImageSrc(images[currentImage])}
               alt={product.title}
               width={800}
               height={800}
@@ -144,6 +170,9 @@ export default function ProductPage({ params }: Props) {
               style={{
                 transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
               }}
+              onError={handleImageError} // ✅ AGREGADO: Manejo de errores
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
             />
           </div>
 
@@ -151,18 +180,19 @@ export default function ProductPage({ params }: Props) {
           <div className="grid grid-cols-4 gap-2 mt-4">
             {images.map((image, index) => (
               <div
-                key={index}
+                key={`thumbnail-${index}`}
                 className={`aspect-square cursor-pointer rounded-md overflow-hidden ${
                   currentImage === index ? "ring-2 ring-pink-500" : ""
                 }`}
                 onClick={() => setCurrentImage(index)}
               >
                 <Image
-                  src={image || "/placeholder.jpg"}
+                  src={getImageSrc(image)}
                   alt={`Thumbnail ${index + 1}`}
                   width={200}
                   height={200}
                   className="w-full h-full object-cover"
+                  onError={handleImageError}
                 />
               </div>
             ))}
@@ -188,7 +218,7 @@ export default function ProductPage({ params }: Props) {
               <div className="flex flex-wrap gap-3">
                 {product.colorVariants.map((variant, index) => (
                   <button
-                    key={index}
+                    key={`color-variant-${index}`}
                     onClick={() => setSelectedVariant(index)}
                     className={`
                       w-12 h-12 rounded-full transition-all

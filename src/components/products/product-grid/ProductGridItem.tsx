@@ -33,11 +33,31 @@ export const ProductGridItem = ({ product }: ProductGridItemProps) => {
     }).format(price);
   };
 
-  // Manejo de imágenes con fallback
-  const imageSrc =
-    imageError || !displayImage
-      ? "/assets/products/placeholder.jpg"
-      : displayImage;
+  const getImageSrc = () => {
+    if (imageError || !displayImage || displayImage.trim() === "") {
+      return "/assets/products/placeholder.png";
+    }
+    return displayImage;
+  };
+
+  const handleImageError = () => {
+    console.warn(`Error loading image for product: ${product.title}`);
+    setImageError(true);
+  };
+
+  const handleMouseEnter = () => {
+    const secondImage = product.images[1];
+    if (secondImage && secondImage.trim() && !imageError) {
+      setDisplayImage(secondImage);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    const firstImage = product.images[0];
+    if (firstImage && firstImage.trim() && !imageError) {
+      setDisplayImage(firstImage);
+    }
+  };
 
   return (
     <div className="bg-gray-50 rounded-lg p-2 md:p-4 w-full transition-all duration-300 hover:shadow-lg">
@@ -46,16 +66,16 @@ export const ProductGridItem = ({ product }: ProductGridItemProps) => {
         <Link href={`/product/${product.slug}`}>
           <div className="aspect-square bg-white rounded-lg overflow-hidden">
             <Image
-              src={imageSrc}
+              src={getImageSrc()}
               alt={product.title}
               className="w-full h-full object-cover transition-transform duration-300"
               width={200}
               height={200}
-              onMouseEnter={() =>
-                setDisplayImage(product.images[1] || product.images[0])
-              }
-              onMouseLeave={() => setDisplayImage(product.images[0])}
-              onError={() => setImageError(true)}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onError={handleImageError}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
             />
           </div>
         </Link>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Product } from "@/interfaces";
 import { ProductGridItem } from "./ProductGridItem";
@@ -22,8 +22,11 @@ export const ProductGrid = ({
     <div className="w-full">
       {/* Grid de productos - Responsive: 2 en mobile, 3 en tablet, 5 en desktop */}
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-6 mb-10">
-        {displayedProducts.map((product) => (
-          <ProductGridItem key={product.slug} product={product} />
+        {displayedProducts.map((product, index) => (
+          <ProductGridItem
+            key={`${product.slug}-${index}`}
+            product={product}
+          />
         ))}
       </div>
 
