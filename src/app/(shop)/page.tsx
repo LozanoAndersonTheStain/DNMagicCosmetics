@@ -1,6 +1,7 @@
 import { Banner } from "@/components";
 import { Categories } from "@/components/ui/categories/Categories";
 import { Testimonials } from "@/components/ui/testimonials/Testimonials";
+import { StatCounter } from "@/components/ui/counter/StatCounter"; // ✅ AGREGADO: Import del contador
 import { statistics } from "@/seed";
 import Image from "next/image";
 
@@ -16,12 +17,16 @@ export default function Home() {
           </h1>
         </div>
 
+        {/* ✅ MODIFICADO: Sección de estadísticas con contador animado */}
         <div className="bg-300dn py-8 sm:py-10 md:py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 px-4 md:px-8">
             {statistics.map((stat, index) => (
               <div key={index} className="text-center">
                 <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-100dn mb-2">
-                  {stat.value}
+                  <StatCounter 
+                    value={stat.value} 
+                    delay={index * 0.3}
+                  />
                 </p>
                 <p className="text-xs sm:text-sm uppercase font-bold">
                   {stat.label}

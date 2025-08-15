@@ -18,16 +18,25 @@ export const StatCounter = ({ value, delay = 0 }: StatCounterProps) => {
   useEffect(() => {
     setIsClient(true);
     
-    // Extraer número de forma segura
     if (value && typeof value === 'string') {
-      const match = value.match(/^(\d+)(.*)$/);
+      
+      // Remover cualquier caracter no numérico al inicio y extraer número
+      const cleanValue = value.trim();
+      const match = cleanValue.match(/(\d+)/); // Buscar cualquier secuencia de dígitos
+      
       if (match) {
-        setNumericValue(parseInt(match[1], 10));
-        setSuffix(match[2] || '');
+        const number = parseInt(match[1], 10);
+        const restOfString = cleanValue.replace(match[1], '');
+
+        setNumericValue(number);
+        setSuffix(restOfString);
+      } else {
+        setNumericValue(0);
+        setSuffix(value);
       }
     }
 
-    // Intersection Observer para activar la animación solo cuando sea visible
+    // ✅ MEJORADO: Intersection Observer más permisivo
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -37,7 +46,10 @@ export const StatCounter = ({ value, delay = 0 }: StatCounterProps) => {
           }
         });
       },
-      { threshold: 0.1 }
+      { 
+        threshold: 0.1, // Cuando el 10% del elemento sea visible
+        rootMargin: '50px'
+      }
     );
 
     if (elementRef.current) {
@@ -47,11 +59,21 @@ export const StatCounter = ({ value, delay = 0 }: StatCounterProps) => {
     return () => observer.disconnect();
   }, [value]);
 
+  useEffect(() => {
+    const fallbackTimer = setTimeout(() => {
+      if (!isVisible && isClient) {
+        setIsVisible(true);
+      }
+    }, 2000);
+
+    return () => clearTimeout(fallbackTimer);
+  }, [isVisible, isClient]);
+
   // Renderizado del lado del servidor
   if (!isClient) {
     return (
       <span className="inline-block min-w-[3ch]">
-        {value}
+        0
       </span>
     );
   }
@@ -60,7 +82,7 @@ export const StatCounter = ({ value, delay = 0 }: StatCounterProps) => {
   if (numericValue <= 0) {
     return (
       <span className="inline-block min-w-[3ch]">
-        {value}
+        {value || '0'}
       </span>
     );
   }
@@ -71,12 +93,14 @@ export const StatCounter = ({ value, delay = 0 }: StatCounterProps) => {
         <CountUp
           start={0}
           end={numericValue}
-          duration={2.5}
+          duration={3.5}
           delay={delay}
           preserveValue
           useEasing={true}
-          useGrouping={true}
+          useGrouping={false}
           suffix={suffix}
+          onStart={() => console.log('🚀 CountUp iniciado')} // Debug
+          onEnd={() => console.log('🏁 CountUp terminado')} // Debug
         />
       ) : (
         <span>0{suffix}</span>
