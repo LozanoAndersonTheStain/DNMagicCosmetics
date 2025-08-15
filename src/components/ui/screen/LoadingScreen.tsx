@@ -4,8 +4,15 @@ import { useEffect, useState } from "react";
 
 export default function LoadingScreen() {
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     const hasSeenLoading = localStorage.getItem("hasSeenLoading");
 
     if (hasSeenLoading) {
@@ -16,12 +23,12 @@ export default function LoadingScreen() {
     const timer = setTimeout(() => {
       setLoading(false);
       localStorage.setItem("hasSeenLoading", "true");
-    }, 9000);
+    }, 6000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isMounted]);
 
-  if (!loading) return null;
+  if (!isMounted || !loading) return null;
 
   return (
     <div className="loading_page z-50">

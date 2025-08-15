@@ -40,10 +40,11 @@ export default function TopMenu() {
           <Link href="/" className="text-2xl font-bold">
             <Image
               src="/assets/Logo.svg"
-              alt="Logo"
+              alt="D&N Magic Cosmetics Logo"
               width={100}
-              height={40}
+              height={50}
               priority
+              className="w-auto h-auto max-h-12"
             />
           </Link>
 

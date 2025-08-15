@@ -63,7 +63,7 @@ export const Banner = ({ options }: PropType) => {
                   alt={item.title}
                   fill
                   priority={index === 0}
-                  quality={95}
+                  quality={75}
                   sizes="100vw"
                   className="object-cover"
                   style={{
@@ -72,7 +72,10 @@ export const Banner = ({ options }: PropType) => {
                   }}
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                  loading={index === 0 ? "eager" : "lazy"}
                 />
+                
+                {/* Texto superpuesto */}
                 <div className="absolute top-1/4 sm:top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-[95%] sm:w-[90%] md:w-4/5">
                   <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 sm:mb-4 text-gray-800 drop-shadow-sm">
                     {item.title}
@@ -95,7 +98,7 @@ export const Banner = ({ options }: PropType) => {
       <div className="absolute bottom-2 sm:bottom-4 left-[85%] transform -translate-x-1/2 flex space-x-1 sm:space-x-2 z-10 backdrop-blur-sm bg-white/30 rounded-full px-2 sm:px-3 py-1 sm:py-2">
         {scrollSnaps.map((_, index) => (
           <DotButton
-            key={index}
+            key={`dot-${index}`}
             onClick={() => onDotButtonClick(index)}
             className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 hover:scale-125 ${
               index === selectedIndex ? "bg-400dn" : "bg-800dn"
