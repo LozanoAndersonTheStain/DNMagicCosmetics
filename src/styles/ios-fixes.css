@@ -1,0 +1,322 @@
+/* Estilos específicos para compatibilidad con dispositivos iOS */
+/* Prevenir zoom automático en inputs en iOS Safari */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+  font-size: 16px !important;
+  transform: translateZ(0);
+  -webkit-appearance: none;
+  border-radius: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fix para el viewport en iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Fix específico para la página de loading */
+  .loading_page {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Mejorar scroll en iOS */
+body {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fix para botones en iOS */
+button {
+  -webkit-appearance: none;
+  border-radius: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Fix para imágenes en iOS - específico para tu catálogo de productos */
+img {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Fix específico para el zoom de imágenes en páginas de producto */
+.cursor-zoom-in {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Optimización para el carrito de compras en iOS */
+.checkout-form {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix para elementos que usan transform - Banner y Carousels */
+.banner-container,
+.carousel-slide {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Fix específico para el Banner de D&N Magic Cosmetics */
+.embla__slide {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Fix para el BrandsSlider en iOS */
+.brandsSlider .item {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Mejorar animaciones del BrandsSlider en iOS */
+@keyframes autoRun {
+  from {
+    left: 100%;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  to {
+    left: calc(200px * -1);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Fix para el grid de productos en iOS */
+.product-grid-item {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Optimización para las transiciones hover en iOS */
+.product-grid-item:hover {
+  -webkit-transform: translateZ(0) scale(1.02);
+  transform: translateZ(0) scale(1.02);
+}
+
+/* Fix para el contador de estadísticas (StatCounter) */
+.stat-counter {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Prevenir problemas de scroll en modales para iOS */
+.modal-overlay {
+  -webkit-overflow-scrolling: touch;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Fix para el footer en iOS */
+.footer-container {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Optimización específica para enlaces en iOS */
+a {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Fix para los íconos de redes sociales en el footer */
+.social-icon {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Mejorar rendimiento de las animaciones fadeIn en iOS */
+.fade-in {
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Fix para el loading screen en iOS */
+.loading_page svg path {
+  fill: transparent;
+  stroke: black;
+  stroke-width: 0.3px;
+  stroke-dasharray: 100;
+  -webkit-animation: textAnimation 8s ease-in-out;
+  animation: textAnimation 8s ease-in-out;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Optimización para formularios en iOS */
+.form-container {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix para selects personalizados en iOS */
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%;
+  background-size: 0.65em auto;
+}
+
+/* Fix para inputs de búsqueda en iOS */
+input[type="search"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Prevenir el zoom automático en Safari iOS para inputs pequeños */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input[type="text"],
+  input[type="password"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="date"],
+  input[type="month"],
+  input[type="time"],
+  input[type="week"],
+  input[type="number"],
+  input[type="email"],
+  input[type="url"] {
+    font-size: 16px !important;
+  }
+}
+
+/* Fix específico para dispositivos iOS en orientación landscape */
+@media screen and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .container {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Optimización para dispositivos iOS con notch */
+@supports (padding: max(0px)) {
+  .safe-area-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Fix para problemas de scroll bounce en iOS */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* Prevenir el scroll bounce en el body */
+@media screen and (max-device-width: 768px) {
+  body {
+    position: fixed;
+    overflow: hidden;
+  }
+  
+  .main-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Fix para elementos sticky en iOS Safari */
+.sticky-element {
+  position: -webkit-sticky;
+  position: sticky;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Optimización para las cards de productos en iOS */
+.product-card {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.product-card:hover {
+  -webkit-transform: translateZ(0) translateY(-2px);
+  transform: translateZ(0) translateY(-2px);
+}
+
+/* Fix para el comportamiento de touch en elementos clickeables */
+.touchable {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  cursor: pointer;
+}
+
+/* Mejorar el rendimiento de las transiciones en iOS */
+.transition-optimized {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Fix específico para el tema rosa de D&N Magic Cosmetics en iOS */
+.theme-pink {
+  -webkit-tap-highlight-color: rgba(236, 72, 153, 0.2);
+}
+
+/* Optimización para el scroll en listas de productos */
+.products-list {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Fix para problemas de rendering en iOS Safari */
+.force-hardware-acceleration {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}

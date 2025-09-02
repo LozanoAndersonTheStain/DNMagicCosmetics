@@ -1,0 +1,1 @@
+export { TouchHandler } from './TouchHandler';
