@@ -5,6 +5,8 @@ import { useCheckoutProtection } from "@/hooks/useCheckoutProtection";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 interface FormData {
   nombres: string;
@@ -21,6 +23,7 @@ export default function VerifyOrderPage() {
   const { items, removeFromCart, isEmpty } = useCart();
   const isAllowed = useCheckoutProtection();
   const [formData, setFormData] = useState<FormData | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const savedFormData = sessionStorage.getItem("checkoutFormData");
@@ -28,6 +31,10 @@ export default function VerifyOrderPage() {
       setFormData(JSON.parse(savedFormData));
     }
   }, []);
+
+  const handleGoBack = () => {
+    router.push("/checkout");
+  };
 
   // Si el carrito está vacío, no renderizar el contenido
   if (!isAllowed || isEmpty) {
@@ -64,74 +71,101 @@ export default function VerifyOrderPage() {
   };
 
   const handlePlaceOrder = () => {
-    if (!formData) return;
+  if (!formData) return;
 
-    // Crear el mensaje para WhatsApp
-    let mensaje = "*Nuevo Pedido*\n\n";
+  // Crear el mensaje para WhatsApp
+  let mensaje = "*Nuevo Pedido*\n\n";
 
-    // Información del cliente
-    mensaje += "*Información de Envío*\n";
-    mensaje += `Nombre: ${formData.nombres} ${formData.apellidos}\n`;
-    mensaje += `Dirección: ${formData.direccion}\n`;
-    if (formData.direccion2) mensaje += `${formData.direccion2}\n`;
-    mensaje += `Ciudad: ${formData.ciudad}\n`;
-    mensaje += `Código Postal: ${formData.codigoPostal}\n`;
-    mensaje += `Teléfono: ${formData.numeroCelular}\n`;
-    mensaje += `País: ${
-      formData.pais === "CO" ? "Colombia" : formData.pais
-    }\n\n`;
+  // Información del cliente
+  mensaje += "*Información de Envío*\n";
+  mensaje += `Nombre: ${formData.nombres} ${formData.apellidos}\n`;
+  mensaje += `Dirección: ${formData.direccion}\n`;
+  if (formData.direccion2) mensaje += `${formData.direccion2}\n`;
+  mensaje += `Ciudad: ${formData.ciudad}\n`;
+  mensaje += `Código Postal: ${formData.codigoPostal}\n`;
+  mensaje += `Teléfono: ${formData.numeroCelular}\n`;
+  mensaje += `País: ${
+    formData.pais === "CO" ? "Colombia" : formData.pais
+  }\n\n`;
 
-    // Detalles de los productos
-    mensaje += "*Productos*\n";
-    items.forEach((item) => {
-      mensaje += `• ${item.title}\n`;
-      mensaje += `  Cantidad: ${item.quantity}\n`;
-      mensaje += `  Precio: ${formatPrice(item.price)}\n`;
-      if (item.selectedColor) mensaje += `  Color: ${item.selectedColor}\n`;
-      mensaje += `  Subtotal: ${formatPrice(item.price * item.quantity)}\n\n`;
-    });
+  // Detalles de los productos
+  mensaje += "*Productos*\n";
+  items.forEach((item) => {
+    mensaje += `• ${item.title}\n`;
+    mensaje += `  Cantidad: ${item.quantity}\n`;
+    mensaje += `  Precio: ${formatPrice(item.price)}\n`;
+    if (item.selectedColor) mensaje += `  Color: ${item.selectedColor}\n`;
+    mensaje += `  Subtotal: ${formatPrice(item.price * item.quantity)}\n\n`;
+  });
 
-    // Resumen del pedido
-    mensaje += "*Resumen del Pedido*\n";
-    mensaje += `Subtotal: ${formatPrice(subtotal)}\n`;
-    mensaje += `Envío: ${formatPrice(shipping)}\n`;
-    mensaje += `Total: ${formatPrice(total)}\n`;
+  // Resumen del pedido
+  mensaje += "*Resumen del Pedido*\n";
+  mensaje += `Subtotal: ${formatPrice(subtotal)}\n`;
+  mensaje += `Envío: ${formatPrice(shipping)}\n`;
+  mensaje += `Total: ${formatPrice(total)}\n`;
 
-    // Codificar el mensaje para la URL
-    const mensajeCodificado = encodeURIComponent(mensaje);
+  // Codificar el mensaje para la URL
+  const mensajeCodificado = encodeURIComponent(mensaje);
 
-    // Número de WhatsApp del vendedor
-    const numeroWhatsApp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER; // Formato: código de país + número
+  // Número de WhatsApp del vendedor
+  const numeroWhatsApp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER; // Formato: código de país + número
 
-    // Crear el enlace de WhatsApp
-    const whatsappUrl = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
+  // Crear el enlace de WhatsApp
+  const whatsappUrl = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
 
-    // Limpiar el carrito y los datos del formulario
-    items.forEach((item) => removeFromCart(item.slug));
-    sessionStorage.removeItem("checkoutFormData");
+  // ✅ NUEVO: Abrir WhatsApp en nueva pestaña en lugar de redirigir
+  window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 
-    // Redirigir a WhatsApp
-    window.location.href = whatsappUrl;
-  };
+  // Limpiar el carrito y los datos del formulario
+  items.forEach((item) => removeFromCart(item.slug));
+  sessionStorage.removeItem("checkoutFormData");
+
+  // ✅ NUEVO: Redirigir a una página de confirmación o al home
+  router.push("/order-success"); // O puedes usar "/" para ir al home
+};
 
   if (!formData) {
     return (
-      <div className="container mx-auto px-4 py-8 text-center">
-        <h2 className="text-2xl font-bold mb-4">
-          Por favor complete sus datos de envío
-        </h2>
-        <Link
-          href="/checkout"
-          className="bg-pink-500 text-white py-3 px-6 rounded-md hover:bg-pink-600 transition-colors inline-block"
-        >
-          Volver al formulario
-        </Link>
+      <div className="container mx-auto px-4 py-8">
+        {/* ✅ NUEVO: Botón de Regresar */}
+        <div className="mb-6">
+          <button
+            onClick={handleGoBack}
+            className="flex items-center gap-2 text-pink-600 hover:text-pink-700 transition-colors duration-200 font-medium"
+          >
+            <IoArrowBackOutline size={26} />
+            Regresar
+          </button>
+        </div>
+
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">
+            Por favor complete sus datos de envío
+          </h2>
+          <Link
+            href="/checkout"
+            className="bg-pink-500 text-white py-3 px-6 rounded-md hover:bg-pink-600 transition-colors inline-block"
+          >
+            Volver al formulario
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* ✅ NUEVO: Botón de Regresar */}
+      <div className="mb-6">
+        <button
+          onClick={handleGoBack}
+          className="flex items-center gap-2 text-pink-600 hover:text-pink-700 transition-colors duration-200 font-medium"
+        >
+          <IoArrowBackOutline size={26} />
+          Regresar
+        </button>
+      </div>
+
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-8">Verificar Orden</h2>
 
@@ -174,9 +208,19 @@ export default function VerifyOrderPage() {
 
           <div>
             <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="text-xl font-semibold mb-4">
-                Dirección de la entrega
-              </h3>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-semibold">
+                  Dirección de la entrega
+                </h3>
+                {/* ✅ NUEVO: Enlace para editar datos */}
+                <button
+                  onClick={handleGoBack}
+                  className="text-pink-500 hover:underline text-sm"
+                >
+                  Editar datos
+                </button>
+              </div>
+              
               <div className="space-y-2">
                 <p>
                   {formData.nombres} {formData.apellidos}
