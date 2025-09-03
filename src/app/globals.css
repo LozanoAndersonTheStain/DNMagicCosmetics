@@ -59,7 +59,7 @@ body {
   align-items: center;
   flex-direction: column;
   gap: 1rem;
-  animation: fadeOut 1s ease-in-out 8s forwards;
+  animation: fadeOut 1s ease-in-out 2.6s forwards;
 }
 
 .loading_page svg path {
@@ -67,7 +67,7 @@ body {
   stroke: black;
   stroke-width: 0.3px;
   stroke-dasharray: 100;
-  animation: textAnimation 8s ease-in-out;
+  animation: textAnimation 2s ease-in-out;
 }
 
 @keyframes textAnimation {
@@ -95,13 +95,23 @@ body {
   overflow: hidden;
 }
 
+/* ✅ CORREGIDO: Animación de fadeOut mejorada */
 @keyframes fadeOut {
-  from {
+  0% {
     opacity: 1;
+    visibility: visible;
+    pointer-events: all;
   }
-  to {
+  99% {
+    opacity: 0;
+    visibility: visible;
+    pointer-events: none;
+  }
+  100% {
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
+    display: none;
   }
 }
 
